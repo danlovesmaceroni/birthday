@@ -1,80 +1,87 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Happy Birthday ❤️</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background: linear-gradient(to bottom, #ffd6e0, #fff);
-      color: #333;
-    }
+import { useState, useRef } from "react";
 
-    .container {
-      padding: 80px 20px;
-    }
+const risaImage = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7JRAlOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCAPlArwDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3Pn6/9oADAMBAAIRAxEAPwDxyiiiv3E8wKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAClxRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAf/Z";
 
-    h1 {
-      font-size: 48px;
-      color: #ff4d88;
-      margin-bottom: 20px;
-    }
+const ennyImage = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7JRAlOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCAW7ArwDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3Pn6/9oADAMBAAIRAxEAPwDxyiiiv3E8wKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//Z";
 
-    p {
-      font-size: 22px;
-      max-width: 700px;
-      margin: 0 auto 20px auto;
-      line-height: 1.6;
-    }
+export default function BirthdaySurpriseWebsite() {
+  const [showSurprise, setShowSurprise] = useState(false);
+  const iframeRef = useRef(null);
 
-    button {
-      background: #ff4d88;
-      color: white;
-      border: none;
-      padding: 14px 24px;
-      font-size: 18px;
-      border-radius: 12px;
-      cursor: pointer;
-      margin-top: 20px;
-    }
+  const handleSurprise = () => {
+    setShowSurprise(true);
+  };
 
-    button:hover {
-      background: #e63e75;
-    }
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-pink-100 via-rose-50 to-white text-gray-800">
+      <section className="min-h-screen flex items-center justify-center px-6 py-16">
+        <div className="max-w-4xl w-full text-center bg-white/80 backdrop-blur rounded-3xl shadow-xl p-8 md:p-14 border border-pink-200">
+          <p className="text-sm md:text-base uppercase tracking-[0.3em] text-pink-500 mb-4">
+            A little surprise for you
+          </p>
 
-    .hidden-message {
-      display: none;
-      margin-top: 30px;
-      font-size: 24px;
-      color: #d6336c;
-      font-weight: bold;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>Happy Birthday My Love ❤️</h1>
-    <p>
-      I made this little website just for you because you mean so much to me.
-    </p>
-    <p>
-      Click the button below for your surprise.
-    </p>
+          <h1 className="text-4xl md:text-6xl font-bold text-rose-500 mb-6">
+            Happy Birthday, BEESA! 💖
+          </h1>
 
-    <button onclick="showMessage()">Open Surprise 🎁</button>
+          <p className="text-lg md:text-2xl leading-relaxed text-gray-700 mb-4">
+            I made this little surprise just for you.
+          </p>
 
-    <div class="hidden-message" id="surpriseMessage">
-      You make my life better every single day. I’m so lucky to have you. I love you so much. 💖
+          <p className="text-base md:text-lg leading-relaxed text-gray-600 mb-8 max-w-2xl mx-auto">
+            Thank you for being such a beautiful part of my life. You make everything feel softer,
+            happier, and more special just by being you.
+          </p>
+
+          <button
+            onClick={handleSurprise}
+            className="rounded-2xl bg-rose-500 hover:bg-rose-600 text-white px-8 py-4 text-lg md:text-xl font-semibold shadow-lg transition"
+          >
+            Open Surprise 🎁
+          </button>
+
+          {showSurprise && (
+            <div className="mt-10 space-y-8 animate-in fade-in duration-700">
+              <div className="rounded-3xl bg-pink-50 border border-pink-200 px-6 py-6 max-w-2xl mx-auto">
+                <p className="text-lg md:text-2xl font-medium text-rose-500 leading-relaxed">
+                  You make my life better every single day. I’m so lucky to have you. I love you so much. 💕
+                </p>
+              </div>
+
+              <div className="max-w-md mx-auto">
+                <p className="text-sm text-gray-500 mb-3">Glue Song by beabadoobee</p>
+                <iframe
+                  ref={iframeRef}
+                  src="https://open.spotify.com/embed/track/3iBgrkexCzVuPy4O9vx7Mf?utm_source=generator&theme=0"
+                  width="100%"
+                  height="152"
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy"
+                  className="rounded-2xl shadow-md"
+                />
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6 pt-4">
+                <div className="bg-white rounded-3xl shadow-md border border-rose-100 p-4">
+                  <img
+                    src={risaImage}
+                    alt="Birthday memory 1"
+                    className="w-full h-[320px] object-cover rounded-2xl"
+                  />
+                </div>
+
+                <div className="bg-white rounded-3xl shadow-md border border-rose-100 p-4">
+                  <img
+                    src={ennyImage}
+                    alt="Birthday memory 2"
+                    className="w-full h-[320px] object-cover rounded-2xl"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
     </div>
-  </div>
-
-  <script>
-    function showMessage() {
-      document.getElementById("surpriseMessage").style.display = "block";
-    }
-  </script>
-</body>
-</html>
+  );
+}
